@@ -1,0 +1,11 @@
+1 - Todo o procedimento foi desenvolvido para rodar no banco [master].
+
+2 - Antes de executar o procedimento, é necessário preencher a tabela "PARAMETROS_RESTORE" com as informações necessárias de cada cliente.
+
+3 - Uma vez que a tabela esteja preenchida, basta executar a procedure "sp_Restaura_Banco_Dados", passando os parametros requisitados.
+
+4 - O procedimento irá realizar uma verificação a fim de identificar se o banco que está para ser restaurado já existe. 
+  > Caso o banco já exista, o procedimento irá apenas executar o restore.
+  > Caso o banco não exista, o procedimento irá primeiramente criar um novo banco e na sequencia, irá iniciar o procedimento de restore no banco recém criado.
+
+5 - Ao final da restauração, o procedimento irá registrar um log acerca da operação realizada, guardando informações acerca do restore realizado.
