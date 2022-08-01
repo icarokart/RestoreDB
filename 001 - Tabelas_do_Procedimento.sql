@@ -9,7 +9,9 @@ CREATE TABLE [dbo].[PARAMETROS_RESTORE](
 	[DIRETORIO_BANCO] [nvarchar](500) NULL,
 	[NOME_ARQ_DADOS] [varchar](50) NULL,
 	[NOME_ARQ_LOG] [varchar](50) NULL,
-	[NOME_BANCO] [varchar](50) NULL
+	[NOME_BANCO] [varchar](50) NULL,
+	[NOME_LOGICO_DADOS] [varchar](100) NULL,
+	[NOME_LOGICO_LOG] [varchar](100) NULL,
 )
 GO
 
