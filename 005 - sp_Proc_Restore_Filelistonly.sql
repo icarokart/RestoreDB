@@ -3,6 +3,9 @@
 Data de Criação: 01/08/2022
 Nome do Objeto: sp_Proc_Restore_Filelistonly
 Autor: Ícaro
+
+Alterações:
+		[Ícaro - 04/09/2022] => Procedimento movido para um BD próprio
 ----------------------------------------------------------------------
 */
 
