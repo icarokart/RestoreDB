@@ -7,6 +7,9 @@ Autor: Ícaro
 Alterações:
 	[Ícaro - 04/09/2022] => Procedimento movido para um BD próprio
 
+	[Ícaro - 27/09/2022] => Alterado o tipo da tabela criada para uma tabela temporaria, devido à conflitos caso mais de uma pessoa executasse o procedimento ao mesmo tempo.
+
+
 ----------------------------------------------------------------------
 */
 
@@ -29,7 +32,7 @@ Begin
 			@SQL_CREATE_TABLE NVARCHAR(MAX)
 
      
-	 SET @SQL_CREATE_TABLE = N' create table tab_RESTORE_FILELISTONLY (
+	 SET @SQL_CREATE_TABLE = N' create table #tab_RESTORE_FILELISTONLY (
 													  nome_logico varchar(50)
 													, nome_fisico varchar(500)
 													, tipo_banco char
@@ -58,20 +61,20 @@ Begin
 
 	 IF (@TIPO_MIDIA = 1)
 	 BEGIN
-		 INSERT tab_RESTORE_FILELISTONLY
+		 INSERT #tab_RESTORE_FILELISTONLY
 		 EXEC [REGISTRO_RESTORE_BD]..SP_PROC_RESTORE_FILELISTONLY  @DIRETORIO_ARQ_BAK
 	 END
 
 	 ELSE IF (@TIPO_MIDIA = 2)
 	 BEGIN
-		INSERT tab_RESTORE_FILELISTONLY
+		INSERT #tab_RESTORE_FILELISTONLY
 		EXEC [REGISTRO_RESTORE_BD]..SP_PROC_RESTORE_FILELISTONLY  @DIRETORIO_ARQ_BAK
 	 END
 
 	 --GUARDANDO O NOME DO ARQUIVO LÓGICO DE DADOS
 	 BEGIN
 		SET @NOME_ARQ_LOGICO_DATA = (SELECT TOP 1 NOME_LOGICO
-									 FROM tab_RESTORE_FILELISTONLY
+									 FROM #tab_RESTORE_FILELISTONLY
 									 WHERE TIPO_BANCO = 'D')
 
 		UPDATE [REGISTRO_RESTORE_BD]..PARAMETROS_RESTORE
@@ -82,7 +85,7 @@ Begin
 	 --GUARDANDO O NOME DO ARQUIVO LÓGICO DE LOG
 	 BEGIN
 		SET @NOME_ARQ_LOGICO_LOG = (SELECT TOP 1 NOME_LOGICO
-									 FROM tab_RESTORE_FILELISTONLY
+									 FROM #tab_RESTORE_FILELISTONLY
 									 WHERE TIPO_BANCO = 'L')
 
 		UPDATE [REGISTRO_RESTORE_BD]..PARAMETROS_RESTORE
@@ -91,7 +94,7 @@ Begin
 	 END
 		
 	 BEGIN
-		DROP TABLE tab_RESTORE_FILELISTONLY
+		DROP TABLE #tab_RESTORE_FILELISTONLY
 	 END
    
      Set NoCount Off;

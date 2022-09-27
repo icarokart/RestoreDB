@@ -10,6 +10,8 @@ Alterações:
 
 	[Ícaro - 04/09/2022] => Procedimento movido para um BD próprio
 
+	[Ícaro - 27/09/2022] => Alterado o tipo da tabela criada para uma tabela temporaria, devido à conflitos caso mais de uma pessoa executasse o procedimento ao mesmo tempo.
+
 ----------------------------------------------------------------------
 */
 
@@ -54,7 +56,7 @@ As
 		Set @Bd_Cliente = Upper(@Bd_Cliente)
 
 		--CRIANDO A TABELA PARA OS DADOS DO RESTORE HEADERONLY
-		SET @SQL_CREATE_TABLE_HEADER = N'CREATE TABLE tab_RESTORE_HEADERONLY(
+		SET @SQL_CREATE_TABLE_HEADER = N'CREATE TABLE #tab_RESTORE_HEADERONLY(
 								BackupName	nvarchar(100),
 								BackupDescription nvarchar(100),	
 								BackupType nvarchar(100),	
@@ -115,12 +117,12 @@ As
 		EXEC SP_EXECUTESQL @SQL_CREATE_TABLE_HEADER 
 
 		BEGIN
-			INSERT tab_RESTORE_HEADERONLY
+			INSERT #tab_RESTORE_HEADERONLY
 			EXEC [REGISTRO_RESTORE_BD]..SP_PROC_RESTORE_HEADERONLY  @DIRETORIO_ARQ_BAK
 		END
 
 		SET @DATA_MIDIA = ( SELECT BackupFinishDate 
-							FROM tab_RESTORE_HEADERONLY 
+							FROM #tab_RESTORE_HEADERONLY 
 							WHERE Position = 1
 						  )
 
@@ -193,7 +195,7 @@ As
 			End
 
 		BEGIN
-			DROP TABLE tab_RESTORE_HEADERONLY
+			DROP TABLE #tab_RESTORE_HEADERONLY
 		END
 	End
 Go
