@@ -8,6 +8,7 @@ Alterações:
 	[Ícaro - 04/09/2022] => Procedimento movido para um BD próprio
 
 	[Ícaro - 27/09/2022] => Alterado o tipo da tabela criada para uma tabela temporaria, devido à conflitos caso mais de uma pessoa executasse o procedimento ao mesmo tempo.
+						 => Removido a variável que guardava o statment de geração da tabela. A tabela passou a ser criada internamente na procedure.
 
 
 ----------------------------------------------------------------------
@@ -28,11 +29,11 @@ Begin
 	 DECLARE
 			@NOME_ARQ_LOGICO_DATA VARCHAR(100),
 			@NOME_ARQ_LOGICO_LOG VARCHAR(100),
-			@TIPO_MIDIA TINYINT = 1, -- 1: DISK // 2: URL
-			@SQL_CREATE_TABLE NVARCHAR(MAX)
+			@TIPO_MIDIA TINYINT = 1 -- 1: DISK // 2: URL
+			
 
      
-	 SET @SQL_CREATE_TABLE = N' create table #tab_RESTORE_FILELISTONLY (
+	 create table #tab_RESTORE_FILELISTONLY (
 													  nome_logico varchar(50)
 													, nome_fisico varchar(500)
 													, tipo_banco char
@@ -55,9 +56,7 @@ Begin
 													, is_present int
 													, tde_thumbprint varchar(50)
 													, snapshot_url varchar(50)
-													   )'
-
-	 EXEC SP_EXECUTESQL @SQL_CREATE_TABLE
+													   )
 
 	 IF (@TIPO_MIDIA = 1)
 	 BEGIN

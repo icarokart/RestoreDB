@@ -11,6 +11,7 @@ Alterações:
 	[Ícaro - 04/09/2022] => Procedimento movido para um BD próprio
 
 	[Ícaro - 27/09/2022] => Alterado o tipo da tabela criada para uma tabela temporaria, devido à conflitos caso mais de uma pessoa executasse o procedimento ao mesmo tempo.
+						 => Removido a variável que guardava o statment de geração da tabela. A tabela passou a ser criada internamente na procedure.
 
 ----------------------------------------------------------------------
 */
@@ -39,7 +40,6 @@ As
 			@Versao_Desktop Varchar(12),
 			@Versao_Bd Varchar(12),
 			@Bd_Cliente Varchar(50),
-			@SQL_CREATE_TABLE_HEADER NVARCHAR(MAX),
 			@DATA_MIDIA DATETIME
 
 		Set @Dt_Restauracao = (Select Getdate())
@@ -56,7 +56,7 @@ As
 		Set @Bd_Cliente = Upper(@Bd_Cliente)
 
 		--CRIANDO A TABELA PARA OS DADOS DO RESTORE HEADERONLY
-		SET @SQL_CREATE_TABLE_HEADER = N'CREATE TABLE #tab_RESTORE_HEADERONLY(
+		CREATE TABLE #tab_RESTORE_HEADERONLY(
 								BackupName	nvarchar(100),
 								BackupDescription nvarchar(100),	
 								BackupType nvarchar(100),	
@@ -113,8 +113,7 @@ As
 								KeyAlgorithm nvarchar(100),	
 								EncryptorThumbprint nvarchar(100),	
 								EncryptorType nvarchar(100),
-								)'
-		EXEC SP_EXECUTESQL @SQL_CREATE_TABLE_HEADER 
+								)
 
 		BEGIN
 			INSERT #tab_RESTORE_HEADERONLY
