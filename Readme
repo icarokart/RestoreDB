@@ -13,3 +13,15 @@
 
 6 - Aas triggers "ti_Suporte_Registro_Backup" e "tu_Suporte_Registro_Backup" guardam na tabela "SUPORTE_REGISTRO_BACKUP" informações específicas do 
     ambiente ao qual foram desenvolvidas (versão atual da aplicação e versão atual do banco de dados), não sendo necessáriaas para o funcionamento do procedimento.
+
+PARAMETROS_RESTORE:
+	COD_CLIENTE - Identidade do cliente (auto incremental)
+	TIPO_BANCO - Tipo do banco a ser restaurado (dados, logs, binarios)
+	CLIENTE - Nome do cliente
+	DIRETORIO_MIDIA - Diretório fisico de onde se encontra o arquivo de backup (.bak)
+	DIRETORIO_BANCO - Diretório onde os arquivos do banco serão salvos (.ldf e .mdf)
+	NOME_ARQ_DADOS - Nome a ser dado ao arquivo de dados (.mdf)
+	NOME_ARQ_LOG - Nome a ser dado ao arquivo de Logs (.ldf)
+	NOME_BANCO - Nome do banco destino (necessário para criação automatica do banco caso necessário)
+	NOME_LOGICO_DADOS - Nome a ser dado ao arquivo lógico do banco de dados
+	NOME_LOGICO_LOG - Nome a ser dado ao arquivo lógico do banco de logs
